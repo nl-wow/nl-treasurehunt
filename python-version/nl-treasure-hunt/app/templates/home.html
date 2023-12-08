@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Hunt Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #444;
+        }
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100%;
+            background-color: #333c5f;
+            color: #fff;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            background-color: #292f4c;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            border-bottom: 1px solid #404a6b;
+        }
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #404a6b;
+        }
+        .menu li:hover {
+            background-color: #404a6b;
+            cursor: pointer;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+        }
+        .question-number {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333c5f;
+        }
+        .question-content {
+            font-size: 24px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .question-tile {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .answer-box {
+            display: block;
+            width: calc(100% - 40px); /* Accounting for padding */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .attachment-box {
+            margin-bottom: 20px;
+        }
+        .attachment-box input {
+            display: block;
+            width: calc(100% - 40px); /* Accounting for padding */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 0;
+        }
+        button[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+        <img src="https://usercontent.one/wp/www.nl-wow.no/wp-content/uploads/2023/07/cropped-cropped-NL_logo_stor_liten-e1691287200109.png">
+        <br>
+        NL: Treasue Hunt
+
+        </div>
+        <ul class="menu">
+            <li>Spørsmål</li>
+            <li>Leaderboard</li>
+            <li>Logg ut</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="question-number">Spørsmål #1</div>
+        <div class="question-content">spørsmål her</div>
+        <input type="text" class="answer-box" placeholder="skriv inn ditt svar her">
+        <div class="attachment-box">
+            <input type="file">
+        </div>
+        <!-- Add a submit button if needed -->
+        <button type="submit">Send inn svar</button>
+    </div>
+</body>
+</html>
