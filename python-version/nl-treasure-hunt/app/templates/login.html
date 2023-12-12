@@ -1,9 +1,14 @@
 <!-- templates/login.html -->
+<div class="welcome-group">
+    <h1> NL Treasure Hunt</h1>
+    <h3> Vennligst logg inn</h3>
+    <p> har du ikke bruker? <a href="http://127.0.0.1:5000/register">Registrer deg her</a></p>
+</div>
 <form method="post" class="login-form">
     {{ form.hidden_tag() }}
     <div class="form-group">
-        {{ form.email.label(class="form-label") }}
-        {{ form.email(class="form-control") }}
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control") }}
     </div>
     <div class="form-group">
         {{ form.password.label(class="form-label") }}
@@ -20,6 +25,11 @@
         padding: 0;
         background-color: #f4f7fc;
         color: #444;
+    }
+    .welcome-group {
+        max-width: 400px;
+        margin: 30px auto;
+        padding: 10px;
     }
     .login-form {
         max-width: 400px;
