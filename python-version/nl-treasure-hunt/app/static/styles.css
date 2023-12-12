@@ -1,0 +1,120 @@
+/* Add these styles to your existing styles.css file */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+    color: #444;
+}
+.sidebar {
+    position: fixed;
+    width: 250px;
+    height: 100%;
+    background-color: #333c5f;
+    color: #fff;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+.logo {
+    background-color: #292f4c;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    border-bottom: 1px solid #404a6b;
+}
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.menu li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #404a6b;
+}
+.menu li:hover {
+    background-color: #404a6b;
+    cursor: pointer;
+}
+.main-content {
+    margin-left: 250px;
+    padding: 40px;
+}
+.submissions-section, .new-question-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.submission {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.submission-text {
+    font-weight: bold;
+}
+
+.btn-correct, .btn-wrong, .btn-view {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-correct {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.btn-correct:hover {
+    background-color: #45a049;
+}
+
+.btn-wrong {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.btn-wrong:hover {
+    background-color: #d32f2f;
+}
+
+.btn-view {
+    background-color: #2196F3; /* Blue */
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: #1e88e5;
+}
+
+.new-question-form input[type="text"],
+.new-question-form input[type="number"] {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.new-question-form .btn-primary {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333c5f;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #292f4c;
+}

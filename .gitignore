@@ -2,3 +2,4 @@
 /.env.server
 /.env.client
 /python-version/nl-treasure-hunt/config.py
+/python-version/nl-treasure-hunt/app/uploads/*

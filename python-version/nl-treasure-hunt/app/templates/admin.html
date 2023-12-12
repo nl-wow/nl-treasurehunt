@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <!-- Admin Sidebar Content -->
+        <div class="logo">
+            <img src="https://usercontent.one/wp/www.nl-wow.no/wp-content/uploads/2023/07/cropped-cropped-NL_logo_stor_liten-e1691287200109.png">
+            <br>
+            NL: Treasue Hunt
+            </div>
+        <ul class="menu">
+            <li>Spørsmål</li>
+            <li>Leaderboard</li>
+            <li>Logg ut</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>Admin Dashboard</h1>
+        <section class="submissions-section">
+            <h2>Innsendte svar</h2>
+            <!-- Dynamically load submissions per question -->
+            <div class="submission">
+                <p>Sprøsmål 1: <span class="submission-text">brukers svar</span></p>
+                <button class="btn btn-correct">Riktig</button>
+                <button class="btn btn-wrong">Feil</button>
+                <a href="path_to_attachment" target="_blank" class="btn btn-view">Se vedlegg</a>
+            </div>
+            <!-- Repeat for each submission -->
+        </section>
+        <section class="new-question-section">
+            <h2>Opprett nytt spørsmål</h2>
+            <form method="post" class="new-question-form">
+                <!-- Include hidden_tag for CSRF protection if using Flask-WTF -->
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.content.label(class="form-label") }} 
+                    {{ form.content(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.answer.label(class="form-label") }} 
+                    {{ form.answer(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.points.label(class="form-label") }} 
+                    {{ form.points(class="form-control") }}
+                </div>
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+        </section>
+    </div>
+</body>
+</html>

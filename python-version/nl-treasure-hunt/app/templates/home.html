@@ -85,7 +85,7 @@
             border-radius: 4px;
             border: 1px solid #ccc;
         }
-        button[type="submit"] {
+        .sub-btn {
             background-color: #5cb85c;
             color: white;
             padding: 10px 20px;
@@ -96,9 +96,22 @@
             width: 100%;
             margin-bottom: 0;
         }
-        button[type="submit"]:hover {
+        .sub-btn:hover {
             background-color: #4cae4c;
         }
+        .btn {
+            
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
     </style>
     
 </head>
@@ -117,14 +130,25 @@
         </ul>
     </div>
     <div class="main-content">
-        <div class="question-number">Spørsmål #1</div>
-        <div class="question-content">spørsmål her</div>
-        <input type="text" class="answer-box" placeholder="skriv inn ditt svar her">
+        <div class="question-number">Spørsmål #{{question.id}}</div>
+        <div class="question-content">{{question.content}}</div>
+        <form method="post" class="answer-box">
+            {{ form.hidden_tag() }}
+            {{ form.answer.label }} {{ form.answer }}
+            
+        </form>
         <div class="attachment-box">
             <input type="file">
         </div>
         <!-- Add a submit button if needed -->
-        <button type="submit">Send inn svar</button>
+        {{ form.submit(class="sub-btn") }}
+        {% if prev_question_id is not none %}
+        <a href="{{ url_for('main.home', question_id=prev_question_id) }}" class="btn">Forrige</a>
+        {% endif %}
+
+        {% if next_question_id is not none %}
+        <a href="{{ url_for('main.home', question_id=next_question_id) }}" class="btn">Neste</a>
+        {% endif %}
     </div>
 </body>
 </html>

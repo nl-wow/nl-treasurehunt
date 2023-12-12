@@ -1,6 +1,7 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,5 +28,13 @@ class Question(db.Model):
 
     def __repr__(self):
         return f'<Question {self.content[:50]}>'
+
+class UserAnswer(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+    answer = db.Column(db.String(500), nullable=False)
+    submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    attachment_filename = db.Column(db.String(128))
+    is_correct = db.Column(db.Boolean)
 
 # Additional models can be added here as per your requirement

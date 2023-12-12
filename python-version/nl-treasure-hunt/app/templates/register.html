@@ -1,8 +1,79 @@
 <!-- templates/register.html -->
-<form method="post">
+<div class="welcome-group">
+    <h1> NL Treasure Hunt</h1>
+    <h3> Vennligst registrer deg/laget ditt</h3>
+    <p> har du allerde bruker? <a href="http://127.0.0.1:5000/login">Logg inn</a></p>
+</div>
+<form method="post" class="login-form">
     {{ form.hidden_tag() }}
-    {{ form.username.label }} {{ form.username() }}
-    {{ form.password.label }} {{ form.password() }}
-    {{ form.confirm_password.label }} {{ form.confirm_password() }}
-    {{ form.submit() }}
+    <div class="form-group">
+        {{ form.username.label(class="form-label") }} 
+        {{ form.username(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.password.label(class="form-label") }} 
+        {{ form.password(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.confirm_password.label(class="form-label") }} 
+        {{ form.confirm_password(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
 </form>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+    color: #444;
+}
+.welcome-group {
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 10px;
+}
+.login-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333c5f;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333c5f;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #292f4c;
+}
+</style>

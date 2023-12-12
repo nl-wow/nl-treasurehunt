@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, BooleanField, FileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask_wtf.file import FileAllowed
 from app.models import User
 
 class RegistrationForm(FlaskForm):
@@ -27,9 +28,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Logg inn')
 
 class QuestionForm(FlaskForm):
-    content = TextAreaField('Question', validators=[DataRequired()])
-    answer = StringField('Answer', validators=[DataRequired()])
-    points = IntegerField('Points', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    content = StringField('Spørsmål', validators=[DataRequired()])
+    answer = StringField('Svar', validators=[DataRequired()])
+    points = IntegerField('Poeng', validators=[DataRequired()])
+    submit = SubmitField('Send inn')
+
+class AnswerForm(FlaskForm):
+    answer = StringField('Ditt svar', validators=[DataRequired()])
+    attachment = FileField('Attachment', validators=[FileAllowed(['jpg', 'png', 'gif', 'pdf'])])
+    submit = SubmitField('Send inn')
 
 # Additional forms can be added here as per your requirement
