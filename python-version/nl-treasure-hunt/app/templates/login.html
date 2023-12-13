@@ -3,6 +3,13 @@
     <h1> NL Treasure Hunt</h1>
     <h3> Vennligst logg inn</h3>
     <p> har du ikke bruker? <a href="http://127.0.0.1:5000/register">Registrer deg her</a></p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 </div>
 <form method="post" class="login-form">
     {{ form.hidden_tag() }}
@@ -18,6 +25,7 @@
         {{ form.submit(class="btn btn-primary") }}
     </div>
 </form>
+
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

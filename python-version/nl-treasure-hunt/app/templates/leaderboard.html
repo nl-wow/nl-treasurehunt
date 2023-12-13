@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .leaderboard-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-users {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .user-card {
+            width: 30%;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .user-card h3 {
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+        }
+
+        .user-card p {
+            margin: 0;
+            color: #666
+        }
+
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .user-stats {
+            margin-top: 10px;
+        }
+
+        .deals-closed {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4b0082;
+        }
+
+        .user-list table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .user-list th, .user-list td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Additional styles for search and filter components */
+
+        /* Responsive styles for smaller screens */
+        @media (max-width: 768px) {
+            .top-users {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .user-card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+        }
+                /* ... additional styles ... */
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+        <img src="https://usercontent.one/wp/www.nl-wow.no/wp-content/uploads/2023/07/cropped-cropped-NL_logo_stor_liten-e1691287200109.png">
+        <br>
+        NL: Treasue Hunt
+
+        </div>
+        <ul class="menu">
+            <li><a href="{{ url_for('main.home')}}">Spørsmål</a></li>
+            <li>Leaderboard</li>
+            <li><a href="{{ url_for('main.logout')}}">Logg ut</a></li>
+            <li><a href="{{ url_for('main.admin')}}">Admin</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="leaderboard-container">
+            <!-- Top three users -->
+            <div class="top-users">
+                {% for user in users[:3] %}
+                <div class="user-card">
+                    <h3>{{ user.username }}</h3>
+                    <div class="user-stats">
+                        <span class="rank"><sup>Rank {{ loop.index }}</sup></span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Detailed list for all users -->
+            <div class="user-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Navn</th>
+                            <th>Poeng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.points }}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</html>

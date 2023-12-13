@@ -8,16 +8,17 @@
 </head>
 <body>
     <div class="sidebar">
-        <!-- Admin Sidebar Content -->
         <div class="logo">
-            <img src="https://usercontent.one/wp/www.nl-wow.no/wp-content/uploads/2023/07/cropped-cropped-NL_logo_stor_liten-e1691287200109.png">
-            <br>
-            NL: Treasue Hunt
-            </div>
+        <img src="https://usercontent.one/wp/www.nl-wow.no/wp-content/uploads/2023/07/cropped-cropped-NL_logo_stor_liten-e1691287200109.png">
+        <br>
+        NL: Treasue Hunt
+
+        </div>
         <ul class="menu">
-            <li>Spørsmål</li>
+            <li><a href="{{ url_for('main.home')}}">Spørsmål</a></li>
             <li>Leaderboard</li>
-            <li>Logg ut</li>
+            <li><a href="{{ url_for('main.logout')}}">Logg ut</a></li>
+            <li><a href="{{ url_for('main.admin')}}">Admin</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -26,10 +27,38 @@
             <h2>Innsendte svar</h2>
             <!-- Dynamically load submissions per question -->
             <div class="submission">
-                <p>Sprøsmål 1: <span class="submission-text">brukers svar</span></p>
-                <button class="btn btn-correct">Riktig</button>
-                <button class="btn btn-wrong">Feil</button>
-                <a href="path_to_attachment" target="_blank" class="btn btn-view">Se vedlegg</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Spiller/Lag</th>
+                            <th>Svar</th>
+                            <th>Vedlegg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission, user, question in submissions %}
+                        <tr>
+                            <td>{{ question.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ submission.answer }}</td>
+                            <td>
+                                {% if submission.attachment_filename %}
+                                <a href="#" onclick="showImage('{{ url_for('main.uploaded_file', filename=submission.attachment_filename) }}')">Se bilde</a>
+                                <!-- Image Modal -->
+                                <div id="imageModal" style="display:none;">
+                                    <span onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
+                                    <img id="modalImage" style="max-width:100%;">
+                                </div>
+
+                                {% else %}
+                                    Ingen vedlegg
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <!-- Repeat for each submission -->
         </section>
@@ -52,7 +81,24 @@
                 </div>
                 {{ form.submit(class="btn btn-primary") }}
             </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </section>
     </div>
+    <script>
+        function showImage(src) {
+            // Set the source of the modal image
+            document.getElementById('modalImage').src = src;
+            
+            // Display the modal
+            document.getElementById('imageModal').style.display = 'block';
+        }
+        </script>
+        
 </body>
 </html>

@@ -4,54 +4,80 @@ from app.forms import RegistrationForm, LoginForm, QuestionForm, AnswerForm
 from app.models import User, Question, db, UserAnswer
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
+import os
+import datetime
 
 main = Blueprint('main', __name__)
 
-@main.route('/', defaults={'question_id': None})
-@main.route('/<int:question_id>')
+@main.route('/', defaults={'question_id': None},  methods=['GET', 'POST'])
+@main.route('/<int:question_id>',methods=['GET', 'POST'])
 @login_required
-def home(question_id=None):
-    # Logic for displaying the main game page
+def home(question_id):
+    form = AnswerForm()
+    allow_next = False
+
     if question_id is None:
-        question = Question.query.first()
+        question = Question.query.order_by(Question.id).first()
     else:
         question = Question.query.get_or_404(question_id)
 
-    prev_question = Question.query.filter(Question.id < question.id).order_by(Question.id.desc()).first()
-    next_question = Question.query.filter(Question.id > question.id).order_by(Question.id).first()
-
-    form = AnswerForm()
-
+    user_answer = UserAnswer.query.filter_by(user_id=current_user.id, question_id=question.id).first()
 
     if form.validate_on_submit():
-        # Logic to save user's answer
-        user_answer = UserAnswer(user_id=current_user.id, 
-                                 question_id=question.id, 
-                                 answer=form.answer.data)
-        if form.attachment.data:
-            filename = secure_filename(form.attachment.data.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            form.attachment.data.save(file_path)
-            user_answer.attachment_filename = filename
+        correct_answer = question.answer.lower().strip()  # Assuming the answer field is a string and lowercase
+        user_submitted_answer = form.answer.data.lower().strip()  # Sanitize input
 
-        db.session.add(user_answer)
+        if user_answer:
+            # Update existing answer
+            user_answer.answer = user_submitted_answer
+            user_answer.is_correct = (user_submitted_answer == correct_answer)
+        else:
+            # Create new answer
+            user_answer = UserAnswer(
+                user_id=current_user.id,
+                question_id=question.id,
+                answer=user_submitted_answer,
+                is_correct=(user_submitted_answer == correct_answer),
+                attachment_filename=None  # Handle attachments as needed
+            )
+            db.session.add(user_answer)
+
+        if user_answer.is_correct:
+            # Only add points if this is the first correct submission for this question
+            if not user_answer.points_awarded:
+                current_user.points += question.points  # Add points from the question
+                user_answer.points_awarded = True  # Mark that points were awarded for this question
+            flash('Rett svar! Trykk "neste" for å gå videre', 'success')
+            allow_next = True
+        else:
+            flash('Feil svar! Prøv igjen. Husk å sjekke stavelse!', 'danger')
+
         db.session.commit()
-        flash('Your answer has been submitted!', 'success')
-    return render_template('home.html', question=question, form=form,
-                            prev_question_id=prev_question.id if prev_question else None,
-                            next_question_id=next_question.id if next_question else None)
+
+    # Logic for fetching prev and next questions remains the same
+    prev_question = Question.query.filter(Question.id < question.id).order_by(Question.id.desc()).first()
+    next_question = Question.query.filter(Question.id > question.id).order_by(Question.id).first() if allow_next else None
+    
+    return render_template('home.html', question=question, form=form, user_answer=user_answer,
+                           prev_question_id=prev_question.id if prev_question else None,
+                           next_question_id=next_question.id if next_question else None)
+
 
 @main.route('/uploads/<filename>')
 def uploaded_file(filename):
     # Optional: Add authentication/authorization logic here
     if not current_user.is_authenticated:
         abort(403)
+    
     # Ensure the filename is safe
-    filename = safe_join(current_app.config['UPLOAD_FOLDER'], filename)
-    if not os.path.isfile(filename):
+    safe_filename = secure_filename(filename)  # Use 'secure_filename' to sanitize the filename
+    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], safe_filename)
+
+    if not os.path.isfile(file_path):
         abort(404)
 
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], safe_filename)
+
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
@@ -64,7 +90,7 @@ def register():
         user = User(username=form.username.data, password_hash=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('spiller/lag opprettet! du kan nå logge inn.', 'success')
         return redirect(url_for('main.login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -102,9 +128,16 @@ def admin():
                                 points=form.points.data)
         db.session.add(new_question)
         db.session.commit()
-        flash('New question created!', 'success')
+        flash('nytt spørsmål opprettet!', 'success')
         return redirect(url_for('main.admin'))
-    return render_template('admin.html', form=form)
+    submissions = (db.session.query(UserAnswer, User, Question)
+                   .join(User, User.id == UserAnswer.user_id)
+                   .join(Question, Question.id == UserAnswer.question_id)
+                   .order_by(Question.id)
+                   .all())
+    
+    return render_template('admin.html', form=form, submissions=submissions)
+
 
 @main.route('/leaderboard')
 def leaderboard():

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, BooleanField, FileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flask_wtf.file import FileAllowed
+from flask_wtf.file import FileAllowed, FileRequired
 from app.models import User
 
 class RegistrationForm(FlaskForm):
@@ -35,7 +35,7 @@ class QuestionForm(FlaskForm):
 
 class AnswerForm(FlaskForm):
     answer = StringField('Ditt svar', validators=[DataRequired()])
-    attachment = FileField('Attachment', validators=[FileAllowed(['jpg', 'png', 'gif', 'pdf'])])
+    attachment = FileField('Bilde', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'gif', 'pdf', "last opp et bilde!"])])
     submit = SubmitField('Send inn')
 
 # Additional forms can be added here as per your requirement

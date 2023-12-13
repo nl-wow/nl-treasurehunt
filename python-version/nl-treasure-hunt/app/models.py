@@ -31,10 +31,13 @@ class Question(db.Model):
 
 class UserAnswer(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)
     answer = db.Column(db.String(500), nullable=False)
     submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     attachment_filename = db.Column(db.String(128))
     is_correct = db.Column(db.Boolean)
+    points_awarded = db.Column(db.Boolean, default=False, nullable=False)
+
+
 
 # Additional models can be added here as per your requirement

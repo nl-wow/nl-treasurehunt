@@ -6,6 +6,10 @@ body {
     background-color: #f4f7fc;
     color: #444;
 }
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
 .sidebar {
     position: fixed;
     width: 250px;
@@ -118,3 +122,44 @@ body {
 .btn-primary:hover {
     background-color: #292f4c;
 }
+#submissions table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#submissions th, #submissions td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#submissions th {
+    background-color: #f4f7fc;
+}
+#imageModal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+#imageModal img {
+    margin: auto;
+    display: block;
+}
+
+#imageModal span {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: #fff;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+

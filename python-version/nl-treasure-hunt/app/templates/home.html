@@ -20,6 +20,10 @@
             color: #fff;
             box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
         }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+        }
         .logo {
             background-color: #292f4c;
             text-align: center;
@@ -111,6 +115,27 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        /* Container for navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between; /* This will place one button at each end */
+            margin-bottom: 20px; /* Add space below the navigation buttons */
+        }
+
+        /* Style for individual navigation buttons */
+        .btn-nav {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none; /* Remove default border for buttons */
+            cursor: pointer;
+        }
+
+        .btn-nav:hover {
+            background-color: #0056b3;
+        }
 
     </style>
     
@@ -124,31 +149,43 @@
 
         </div>
         <ul class="menu">
-            <li>Spørsmål</li>
+            <li><a href="{{ url_for('main.home', question_id=prev_question_id) }}">Spørsmål</a></li>
             <li>Leaderboard</li>
-            <li>Logg ut</li>
+            <li><a href="{{ url_for('main.logout', question_id=prev_question_id) }}">Logg ut</a></li>
+            <li><a href="{{ url_for('main.admin', question_id=prev_question_id) }}">Admin</a></li>
         </ul>
     </div>
     <div class="main-content">
         <div class="question-number">Spørsmål #{{question.id}}</div>
         <div class="question-content">{{question.content}}</div>
-        <form method="post" class="answer-box">
+        <form method="post" class="answer-box" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.answer.label }} {{ form.answer }}
-            
+            <div class="attachment-box">
+                {{ form.attachment.label }} {{ form.attachment }}
+                {% for error in form.attachment.errors %}
+                <span style="color: red;">{{error}}</span>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="sub-btn") }}
         </form>
-        <div class="attachment-box">
-            <input type="file">
-        </div>
-        <!-- Add a submit button if needed -->
-        {{ form.submit(class="sub-btn") }}
-        {% if prev_question_id is not none %}
-        <a href="{{ url_for('main.home', question_id=prev_question_id) }}" class="btn">Forrige</a>
-        {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-        {% if next_question_id is not none %}
-        <a href="{{ url_for('main.home', question_id=next_question_id) }}" class="btn">Neste</a>
-        {% endif %}
+        <div class="nav-buttons">
+            {% if prev_question_id is not none %}
+            <a href="{{ url_for('main.home', question_id=prev_question_id) }}" class="btn-nav">Forrige</a>
+            {% endif %}
+
+            {% if next_question_id %}
+            <a href="{{ url_for('main.home', question_id=next_question_id) }}" class="btn-nav">Neste</a>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
